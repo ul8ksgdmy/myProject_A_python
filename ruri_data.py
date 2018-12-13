@@ -1,4 +1,4 @@
-# 마치 은행처럼 데이터 예금과 인출
+# 마치 은행처럼 데이터 예금과 인출을 하는 역할
 class Ruri_Data:
     def __init__(self, cno, clink, ctitle, cthumb, ccontent, clinks, creplies):
         self.__cno = cno

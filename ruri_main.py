@@ -13,63 +13,11 @@
 
 
 # import
+from ruri_service import Crawling
+from ruri_dao import CrwalingDAO
 
-# 웹페이지 접속과 파싱
-import requests
-import lxml.html
-import cssselect
-
-# 크롤링
-from ruri_crawling import crawling
-
-# 몽고DB
-from pymongo import MongoClient
-from pymongo import errors
-import json
-
-# 크롤링
-## 크롤링에 쓸 css태크 호출
-with open('./myProject_A_python/mycrawlingCSS.json') as f:
-    cdata = json.load(f)
-
-## 순서대로 번호, 게시글 링크, 제목, 추천, 게시글 내 링크, 댓글
-cr = crawling(
-        cdata['cno'],
-        cdata['clink'],
-        cdata['ctitle'],
-        cdata['cthumb'],
-        cdata['ccontent'],
-        cdata['clinks'],
-        cdata['creplies'],
-        )
-
-# DB에 저장 (클래스 화)
-with open('./myProject_A_python/myinfo.json') as f:
-    data = json.load(f)
-
-j_host = data['host']
-j_port = data['port']
-j_database = data['database']
-j_collection = data['collection']
-
-client = MongoClient(j_host, j_port)
-database = client[j_database]
-collection = database[j_collection]
-
-### 자료를 얼마나 모았을까? ###
-print('titles this crawler has collected till now : ', len(cr[2]))
-with open('./myProject_A_python/mysave.json', 'w') as f:
-    for i in range(0, len(cr[2])):
-        ruri = {
-            'no' : cr[0][i],
-            'html' : cr[1][i],
-            'title' : cr[2][i],
-            'thumbup' : cr[3][i],
-            'content' : cr[4][i]
-        }
-        json.dump(ruri, f)
-        doc_id = collection.insert_one(ruri).inserted_id
-        print('no. : ', i, 'inserted id in mongodb : ', doc_id)
-f.close()
-
-client.close()
+#크롤링
+cr = Crawling()
+cd = CrwalingDAO()
+print('---- 크롤링 중 ----')
+cd.insertone(cr.crawling(5)) #5page까지
