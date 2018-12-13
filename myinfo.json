@@ -1,0 +1,6 @@
+{
+    "host" : "13.125.178.188",
+    "port" : 9046,
+    "database" : "mongodb",
+    "collection" : "ruriweb"
+}

@@ -29,7 +29,7 @@ def crawling(cno, clink, ctitle, cthumb, ccontent, clinks, creplies):
 
     # 1. upper page 
     # 모든 페이지에 접속하여 글번호, 제목, 제목링크, 추천 정보를 저장.
-    for i in range(0, 10):
+    for i in range(1, 100):
         params = {'page': i}
         res = requests.get(url, headers=headers, params=params)
         html = res.text
