@@ -15,7 +15,7 @@
 # import
 from ruri_service import Crawling
 # from ruri_dao import CrwalingDAO
-from ruri_dao import CrwalingDAO
+from ruri_dao_test import CrwalingDAO
 import time
 
 # 프로그램 시작 측정
@@ -25,7 +25,7 @@ start_time = time.time()
 cr = Crawling()
 cd = CrwalingDAO()
 print('---- 크롤링 중 ----')
-cd.insertone(cr.crawling(20)) #5page까지
+cd.insertone(cr.crawling(2)) #5page까지
 
 # 프로그램 종료 측정 및 결과 출력
 print('It takes %s seconds completing the crawling and the uploading' % (round(time.time() - start_time,2)))

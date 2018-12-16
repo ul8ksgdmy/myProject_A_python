@@ -16,8 +16,9 @@ class WebCrawler:
     # 링크정보를 꼬리만 가지고 있을 때, 모든 정보를 합침.
     def adjusthtml_pb_tail(self, part_html, head=""):
         full_html = ""
-        if part_html.get('href').find(r'\.') > 0:
-            full_html = head + part_html
+        if part_html.get('href').find(r'\.') == 0:
+            full_html = head + str(part_html.get('href'))
+        full_html = str(part_html.get('href'))
         return full_html
     
     def crawlingposts(self, lastpage, cno, clink, ctitle, cthumb, ccontent, clinks, creplies):
@@ -26,8 +27,9 @@ class WebCrawler:
 
         # 접속할 주소 및 기타 접속 정보
         
-        url = 'http://bbs.ruliweb.com/community/board/300148/list'
+        url = 'http://bbs.ruliweb.com/community/board/300148/list' #루리웹
         headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36'}
+        print('%s 에 접속합니다. : ' % url)
 
         # 0. 매 페이지의 정보를 저장할 리스트 준비
         ## upper page
@@ -69,9 +71,13 @@ class WebCrawler:
             for part_html in root.cssselect(cthumb):
                 ruri_thumbup_list.append(part_html.text_content())
 
-        # 2. lower page 
+        print('총 수집한 링크 수 : ', len(ruri_html_list))
+
+        # 2. lower page
+        i = 1 #현재 진행사항을 파악하기 위한 변수 설정
         # 수집한 링크로 이동하여 게시글, 게시글 내 링크, 댓글 정보를 저장.
         for innerlink in ruri_html_list:
+            print('크롤링 진행사항', i, ' / ', len(ruri_html_list))
             inner_res = requests.get(innerlink, headers=headers)
             inner_html = inner_res.text
             inner_root = lxml.html.fromstring(inner_html)
@@ -107,6 +113,7 @@ class WebCrawler:
 
             #list에 모든 dictionary type 저장.
             ruri_contents_part_list.append(ruri_content_dict)
+            i += 1
 
         ### 크롤링 시간측정 종료 ###
         print(" It takes %s seconds crawling these webpages" % (round(time.time() - start_time,2)))
