@@ -8,8 +8,9 @@ class ConnectTo:
         self.__collection = collection
 
         # mongoDB
-        # self.__m_database = client[]
-        # self.__m_collection = database[]
+        self.__m_client = ""
+        self.__m_database = ""
+        self.__m_collection = ""
 
     @property
     def host(self):
@@ -71,9 +72,6 @@ class ConnectTo:
 
     # 속성값을 넘겨야 하는데 단지 str으로 인식 어떻게 넘겨야 하는가?
     def MongoDB(self):
-        m_client = MongoClient(self.__host, self.__port)
-        m_database = m_client[self.__database]
-        m_collection = m_database[self.__collection]
-
-        return m_client
-
+        self.__m_client = MongoClient(self.__host, self.__port)
+        self.__m_database = self.m_client[self.__database]
+        self.__m_collection = self.__m_database[self.__collection]

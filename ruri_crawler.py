@@ -21,6 +21,7 @@ class WebCrawler:
         full_html = str(part_html.get('href'))
         return full_html
     
+    # 페이지를 설정할 수 있게 옵션 선택
     def crawlingposts(self, lastpage, cno, clink, ctitle, cthumb, ccontent, clinks, creplies):
         ### 크롤링 시간측정 시작 ####
         start_time = time.time()
@@ -28,6 +29,7 @@ class WebCrawler:
         # 접속할 주소 및 기타 접속 정보
         
         url = 'http://bbs.ruliweb.com/community/board/300148/list' #루리웹
+        # url = 'http://www.ilbe.com/index.php?mid=politics' #일베
         headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36'}
         print('%s 에 접속합니다. : ' % url)
 
