@@ -23,12 +23,12 @@ class WebCrawler:
         return full_html
     
     # 페이지를 설정할 수 있게 옵션 선택
-    def crawlingposts(self, lastpage, **kwargs):
+    def crawlingposts(self, lastpage, targeturl, headurl, cno, clink, ctitle, cthumbup, cthumbdown, cdate, ccontent, clinks, creplies, cthumbupl, cthumbdownl):
         ### 크롤링 시간측정 시작 ####
         start_time = time.time()
 
         # 접속할 주소 및 기타 접속 정보
-        url = kwargs[0]
+        url = targeturl
         
         headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36'}
         print('%s 에 접속합니다. : ' % url)
@@ -59,30 +59,30 @@ class WebCrawler:
 
             ## 번호
             # 특이사항 : cssselect를 이용할 때 :not(.클래스이름)을 사용하여 notice class 제거.
-            for part_html in root.cssselect(kwargs[2]):
+            for part_html in root.cssselect(cno):
                 ruri_upper_page_list[0].append(part_html.text_content())
 
             ## 링크
-            for part_html in root.cssselect(kwargs[3]):
+            for part_html in root.cssselect(clink):
                 #특이사항 : 꼬리만 추출되는 경우 감안
-                ruri_upper_page_list[1].append(self.adjusthtml_pb_tail(part_html, kwargs[1]))
+                ruri_upper_page_list[1].append(self.adjusthtml_pb_tail(part_html, headurl))
                 # ruri_html_list.append(part_html.get('href'))
 
             ## 제목
-            for part_html in root.cssselect(kwargs[4]):
+            for part_html in root.cssselect(ctitle):
                 ruri_upper_page_list[2].append(part_html.text_content())
 
             ## 추천수
             # 특이사항 : cssselect를 이용할 때 :not(.클래스이름)을 사용하여 notice class 제거.
-            for part_html in root.cssselect(kwargs[5]):
+            for part_html in root.cssselect(cthumbup):
                 ruri_upper_page_list[3].append(part_html.text_content())
             
             ## 비추수
-            for part_html in root.cssselect(kwargs[6]):
+            for part_html in root.cssselect(cthumbdown):
                 ruri_upper_page_list[4].append(part_html.text_content())
 
             ## 날짜
-            for part_html in root.cssselect(kwargs[7]):
+            for part_html in root.cssselect(cdate):
                 ruri_upper_page_list[5].append(part_html.text_content())
 
         #빈 upper page 리스트 체크 - 모든 리스트를 검사해서 빈 리스트가 있으면 이를 더미 값으로 채움.
@@ -116,28 +116,28 @@ class WebCrawler:
             ruri_lower_thumbdown_list = []
 
             # 게시글
-            for part_html in inner_root.cssselect(kwargs[8]):
+            for part_html in inner_root.cssselect(ccontent):
                 #게시글은 하나 밖에 없기 때문에 리스트가 아닌 일반 변수로 저장
                 main_content = part_html.text_content()
             
             # 링크
             ## 해결필요 : 유튜브 등의 주소는?
-            for part_html in inner_root.cssselect(kwargs[9]):
+            for part_html in inner_root.cssselect(clinks):
                 # 특이사항 : a태그로 link를 불러왔으나, 그림파일 등 a 태크를 사용하는 경우 blank 저장
                 if part_html.get('href') is None:
                     continue
                 ruri_innerlink_list.append(part_html.get('href')) #내부링크
 
             # 댓글
-            for part_html in inner_root.cssselect(kwargs[10]):
+            for part_html in inner_root.cssselect(creplies):
                 ruri_replies_list.append(part_html.text_content())
 
             ## 추천수
-            for part_html in root.cssselect(kwargs[11]):
+            for part_html in root.cssselect(cthumbup):
                 ruri_lower_thumbup_list.append(part_html.text_content())
             
             ## 비추수
-            for part_html in root.cssselect(kwargs[12]):
+            for part_html in root.cssselect(cthumbdown):
                 ruri_lower_thumbdown_list.append(part_html.text_content())
 
             # 각 게시글의 내용, 링크, 댓글을 저장할 dictionary type 생성
