@@ -15,12 +15,11 @@ class Crawling:
         config = Config()
         if config.read_init_config(target) != True:
             sys.exit()
-        cdata = config.read_info_in_config(target)
-        return cdata
+        ctargetdata = config.read_info_in_config(target)
+        return ctargetdata
 
     def crawling(self, target, lastpage):
-        cdata = self.setcsstags(target)
-
+        ctargetdata = self.setcsstags(target)
         # print(len(cdata))
         # for i in cdata:
         #     print(i)
@@ -28,21 +27,8 @@ class Crawling:
         
         ## 순서대로 번호, 게시글 링크, 제목, 추천, 게시글 내 링크, 댓글
         wc = WebCrawler()
-        result = wc.crawlingposts(lastpage, cdata)
+        result = wc.crawlingposts(lastpage, ctargetdata)
         return result
-        # cdata['url'],
-        # cdata['head'],
-        # cdata['cno'],
-        # cdata['clink'],
-        # cdata['ctitle'],
-        # cdata['cthumbup'],
-        # cdata['cthumbdown'],
-        # cdata['cdate'],
-        # cdata['ccontent'],
-        # cdata['clinks'],
-        # cdata['creplies'],
-        # cdata['cthumbupl'],
-        # cdata['cthumbdownl']
 
 #test
 c = Crawling()
