@@ -47,15 +47,18 @@ class Config:
                 the_dict[section][key] = val
         return the_dict
 
-    #ini 파일에서 자료 찾기
-    def read_info_in_config(self, section):
+    #ini 파일에서 전체 및 특정 자료 찾기
+    def read_info_in_config(self, section=None):
         config = self.config
         cdict = self.as_dict(config)
-        print(type(cdict))
-        return cdict
+        print(type(cdict[section]))
+        if section == None:
+            return cdict
+        else:
+            return cdict[section]
 
 
-c = Config()
-# b = c.read_init_config('ruriweb')
-d = c.read_info_in_config('ruriweb')
-print(d)
+# c = Config()
+# # b = c.read_init_config('ruriweb')
+# d = c.read_info_in_config('ruriweb')
+# print(d)
